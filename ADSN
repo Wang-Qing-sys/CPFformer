@@ -1,1 +1,39 @@
+function  [Cc,Cc_avg]=func_Cluster_Coeff(matrix)
+ 
+Num = size(matrix,2);
+Cc  = zeros(1,Num);
 
+for i=1:Num
+    Index1 = find(matrix(i,:)==1);  
+    if isempty(Index1) == 1
+       Cc(i)=0;
+    else        
+        m = length(Index1); 
+        if m == 1
+           Cc(i)=0;
+        else
+           B     = matrix(Index1,Index1);   
+           Cc(i) = length(find(B==1))/(m*(m-1));
+        end
+    end
+end
+Cc_avg=mean(Cc);
+
+
+function [Dds,Dds_avg,M,P_Dds]=func_Degree_Distribution(matrix)
+ 
+Num = size(matrix,2);
+Dds = zeros(1,Num);
+for i=1:Num
+    Dds(i)=sum(matrix(i,:));
+end
+Dds_avg = mean(Dds);
+
+ 
+ 
+M=max(Dds);
+for i=1:M+1;   
+    Num_Dds(i) = length(find(Dds==i-1));
+end
+P_Dds    = zeros(1,M+1);
+P_Dds(:) = Num_Dds(:)./sum(Num_Dds);
